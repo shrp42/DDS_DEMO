@@ -3,5 +3,44 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-    <h1>Welcome to Home Page</h1>
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-4xl text-center font-bold">HomePage</h2>
+    <h2 class="mb-12 text-2xl text-center font-bold">Newest Items</h2>
+
+    <div class="grid grid-cols-3 gap-6">
+        {% for item in items %}
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300">
+                <a href="#">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" class="w-full h-64 object-cover">
+                    {% else %}
+                        <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
+                            No Image
+                        </div>
+                    {% endif %}
+
+                    <div class="p-8">
+                        <h2 class="text-3xl font-semibold mb-2">{{ item.name }}</h2>
+                        <p class="text-gray-700 text-xl">Цена: {{ item.price|floatformat:2 }}₽</p>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p class="col-span-3 text-center text-gray-500">No items available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mt-12 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center font-bold">Categories</h2>
+    <div class="grid grid-cols-3 gap-6">
+        {% for category in categories %}
+            <div class="bg-teal-700 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 hover:bg-teal-800 transition duration-300 ease-in-out p-6 flex items-center justify-center">
+                <h2 class="text-3xl font-semibold mb-0 text-white">{{ category.name }}</h2>
+            </div>
+        {% empty %}
+            <p class="col-span-3 text-center text-white">No categories available.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
