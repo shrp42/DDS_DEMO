@@ -5,7 +5,7 @@
 {% block content %}
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
     <h2 class="mb-12 text-4xl text-center font-bold">HomePage</h2>
-    <h2 class="mb-12 text-2xl text-center font-bold">Newest Items</h2>
+    <h2 class="mb-12 text-2xl text-center font-bold">Популярные товары</h2>
 
     <div class="grid grid-cols-3 gap-6">
         {% for item in items %}
@@ -26,20 +26,20 @@
                 </a>
             </div>
         {% empty %}
-            <p class="col-span-3 text-center text-gray-500">No items available.</p>
+            <p class="col-span-3 text-center text-gray-500">Нет выбранного товара.</p>
         {% endfor %}
     </div>
 </div>
 
 <div class="mt-12 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-2xl text-center font-bold">Categories</h2>
+    <h2 class="mb-12 text-2xl text-center font-bold">Категории</h2>
     <div class="grid grid-cols-3 gap-6">
         {% for category in categories %}
             <div class="bg-teal-700 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 hover:bg-teal-800 transition duration-300 ease-in-out p-6 flex items-center justify-center">
                 <h2 class="text-3xl font-semibold mb-0 text-white">{{ category.name }}</h2>
             </div>
         {% empty %}
-            <p class="col-span-3 text-center text-white">No categories available.</p>
+            <p class="col-span-3 text-center text-white">Нет выбранной категории.</p>
         {% endfor %}
     </div>
 </div>
