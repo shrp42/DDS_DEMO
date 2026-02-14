@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6">
+
+    <!-- Картинка товара -->
+    <div class="col-span-3">
+        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="rounded-xl shadow-lg">
+    </div>
+
+    <!-- Описание товара -->
+    <div class="col-span-2 p-6 bg-gray-100 rounded-xl shadow ">
+        <h1 class="mb-4 text-3xl font-black text-black">{{ item.name }}</h1>
+
+        <p class="text-black text-xl font-semibold mb-4">
+            <strong>Цена: </strong>{{ item.price|floatformat:"0" }}₽
+        </p>
+
+        <p class="text-black text-lg font-thin mb-6">
+            <strong>Описание товара:</strong><br>
+            {{ item.description|linebreaksbr }}
+        </p>
+
+        <!-- Кнопка связаться с продавцом с иконкой -->
+        <a href="#"
+           class="inline-flex items-center px-8 py-3 text-lg font-semibold bg-teal-700 text-white rounded-xl
+                  transform hover:scale-105 hover:bg-teal-800 transition duration-300 ease-in-out">
+            Связаться с продавцом
+            <!-- Иконка стрелки -->
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+        </a>
+    </div>
+</div>
+
+<!-- Похожие товары -->
+<div class="mt-12 px-6 py-8 bg-gray-100 rounded-xl">
+    <h2 class="mb-8 text-3xl text-center font-semibold">Похожие товары</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for related in related_items %}
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300">
+                <a href="{% url 'item:detail' related.id %}">
+                    {% if related.image %}
+                        <img src="{{ related.image.url }}" class="w-full h-48 object-cover">
+                    {% else %}
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                            No Image
+                        </div>
+                    {% endif %}
+
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2">{{ related.name }}</h3>
+                        <p class="text-gray-700 text-lg">Цена: {{ related.price|floatformat:0 }}₽</p>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p class="col-span-3 text-center text-gray-500">Нет похожих товаров.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
