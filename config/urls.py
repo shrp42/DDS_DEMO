@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # админка
     path('', include('core.urls')),
     path('items/', include('item.urls')),
+    path('', include('core.urls', namespace='core')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

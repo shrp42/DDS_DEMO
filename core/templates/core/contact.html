@@ -1,7 +1,74 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
-{% block title %}Contact{% endblock %}
+
+{% block title %}Контакты{% endblock %}
 
 {% block content %}
-    <h1>The Contact Page</h1>
+<div class="max-w-5xl mx-auto py-16 px-4">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">Свяжитесь с нами</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Email -->
+        <a href="mailto:example@example.com"
+           class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+            <img src="{% static 'images/email_1159693.png' %}"
+                 alt="Email Icon"
+                 class="w-12 h-12 mb-4">
+
+            <span class="text-lg font-semibold text-gray-800">Email</span>
+            <span class="text-gray-500 mt-1">example@example.com</span>
+        </a>
+
+
+        <!-- Telegram -->
+        <a href="https://t.me/username" target="_blank"
+           class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+            <img src="{% static 'images/paper-plane_14235461.png' %}"
+                 alt="Telegram Icon"
+                 class="w-12 h-12 mb-4">
+
+            <span class="text-lg font-semibold text-gray-800">Telegram</span>
+            <span class="text-gray-500 mt-1">@username</span>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://wa.me/1234567890" target="_blank"
+           class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+            <img src="{% static 'images/whatsapp.png' %}"
+                 alt="Whatsapp Icon"
+                 class="w-12 h-12 mb-4">
+
+            <span class="text-lg font-semibold text-gray-800">WhatsApp</span>
+            <span class="text-gray-500 mt-1">+123 456 7890</span>
+        </a>
+
+        <!-- Телефон -->
+        <a href="tel:+1234567890"
+           class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+            <img src="{% static 'images/phone.png' %}"
+                 alt="PhoneCall Icon"
+                 class="w-12 h-12 mb-4">
+
+            <span class="text-lg font-semibold text-gray-800">Позвонить</span>
+            <span class="text-gray-500 mt-1">+123 456 7890</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://instagram.com/username" target="_blank"
+           class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+            <img src="{% static 'images/inst.png' %}"
+                 alt="Inst Icon"
+                 class="w-12 h-12 mb-4">
+
+            <span class="text-lg font-semibold text-gray-800">Instagram</span>
+            <span class="text-gray-500 mt-1">@username</span>
+        </a>
+    </div>
+</div>
 {% endblock %}

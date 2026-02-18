@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from django.contrib.auth.models import User
 
 class LoginForm(AuthenticationForm):
@@ -37,4 +37,3 @@ class SignupForm(UserCreationForm):
         'placeholder': 'Повторите пароль',
         'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
     }))
-

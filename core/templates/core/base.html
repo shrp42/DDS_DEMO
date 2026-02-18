@@ -45,11 +45,37 @@
             </a>
 
             {% if request.user.is_authenticated %}
-                <!-- Профиль -->
-                <a href="#"
-                   class="px-5 py-2 text-lg font-semibold bg-teal-700 border border-teal-700 text-white rounded-lg shadow hover:bg-teal-900 transition">
-                    {{ request.user.username }}
-                </a>
+                <div class="relative group">
+                    <!-- Кнопка профиля -->
+                    <button
+                        class="px-5 py-2 text-lg font-semibold bg-teal-700 border border-teal-700 text-white rounded-lg shadow hover:bg-teal-900 transition flex items-center gap-2">
+                        {{ request.user.username }}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                   <!-- Выпадающее меню -->
+                    <div
+                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-50">
+                        <!-- Профиль -->
+                        <a href="{% url 'core:profile' %}"
+                           class="flex items-center gap-2 px-5 py-3 text-gray-700 hover:bg-teal-50 hover:text-teal-700 rounded-lg transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.946 0 5.667.92 7.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Профиль
+                        </a>
+
+                        <!-- Выйти из аккаунта -->
+                        <a href="{% url 'core:logout' %}"
+                           class="flex items-center gap-2 px-5 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+                            </svg>
+                            Выйти
+                        </a>
+                    </div>
             {% else %}
                 <!-- Регистрация -->
                 <a href="{% url 'core:signup' %}"
@@ -61,8 +87,8 @@
                 <a href="{% url 'core:login' %}"
                    class="px-5 py-2 text-lg font-semibold bg-white border border-teal-700 text-teal-700 rounded-lg shadow hover:bg-teal-700 hover:text-white transition">
                     Войти
-                </a>
-            {% endif %}
+            </a>
+        {% endif %}
         </div>
     </nav>
 
@@ -83,7 +109,7 @@
                 <h3 class="text-xl font-semibold text-gray-500 mb-4">Menu</h3>
                 <ul class="space-y-2">
                     <li><a href="{% url 'core:contact' %}" class="text-teal-600 hover:text-teal-900 transition">Контакты</a></li>
-                    <li><a href="#" class="text-teal-600 hover:text-teal-900 transition">Помощь</a></li>
+                    <li><a href="{% url 'core:faq' %}" class="text-teal-600 hover:text-teal-900 transition">FAQ</a></li>
                 </ul>
             </div>
         </div>
