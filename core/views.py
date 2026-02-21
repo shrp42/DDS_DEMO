@@ -1,10 +1,13 @@
 from unicodedata import category
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from item.models import Category, Item
-from .forms import SignupForm
+from .forms import SignupForm,ProfileForm
 from django.db.models import Q
 from django.db.models.functions import Lower
+from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -87,3 +90,27 @@ def search(request):
         'query': request.GET.get('query', ''),
         'favorite_ids': favorite_ids
     })
+
+@login_required
+def profile_edit(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=user)
+        password = request.POST.get('password', '').strip()
+
+        if form.is_valid():
+            form.save()
+
+            if password:
+                user.set_password(password)
+                user.save()
+                messages.success(request, 'Профиль и пароль успешно обновлены!')
+            else:
+                messages.success(request, 'Профиль успешно обновлён!')
+
+            return redirect('core:profile')
+    else:
+        form = ProfileForm(instance=user)
+
+    return render(request, 'core/profile_edit.html', {'form': form})

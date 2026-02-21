@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow mt-12">
+    <h2 class="text-3xl font-bold mb-8 text-center">Редактирование профиля</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 text-green-600 font-medium">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div>{{ form.username }}</div>
+
+        <!-- Email -->
+        <div>{{ form.email }}</div>
+
+        <!-- Password -->
+        <div>{{ form.password }}</div>
+
+        <button type="submit"
+                class="w-full bg-teal-700 text-white py-4 rounded-xl hover:bg-teal-900 transition font-semibold">
+            Сохранить изменения
+        </button>
+    </form>
+</div>
+{% endblock %}

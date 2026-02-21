@@ -37,3 +37,28 @@ class SignupForm(UserCreationForm):
         'placeholder': 'Повторите пароль',
         'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
     }))
+
+
+class ProfileForm(forms.ModelForm):
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Новый пароль (оставьте пустым, если не менять)',
+            'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
+        }),
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')  # оставляем только username и email
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'placeholder': 'Имя пользователя',
+                'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
+            }),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'Email',
+                'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
+            }),
+        }

@@ -80,9 +80,11 @@
     </div>
 </div>
 
+<!-- Скрипт для работы сердечек -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.favorite-heart').forEach(function(heart) {
+        const img = heart.querySelector('img'); // получаем картинку внутри <a>
         heart.addEventListener('click', function(e) {
             e.preventDefault();
             const itemId = heart.dataset.itemId;
@@ -94,10 +96,15 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if(data.favorited){
-                    heart.src = "{% static 'images/love1.png' %}";
+                    img.src = "{% static 'images/love1.png' %}";
+                    img.dataset.favorited = "true";
                 } else {
-                    heart.src = "{% static 'images/love0.png' %}";
+                    img.src = "{% static 'images/love0.png' %}";
+                    img.dataset.favorited = "false";
                 }
+            })
+            .catch(error => {
+                console.error('Ошибка при обновлении избранного:', error);
             });
         });
     });

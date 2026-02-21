@@ -102,21 +102,21 @@
     </div>
 {% endif %}
 
-<!-- JS для toggle favorite -->
+
+<!-- Скрипт для работы сердечек -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.favorite-img').forEach(function(img){
-        const btn = img.parentElement;
-
-        btn.addEventListener('click', function(e){
+    document.querySelectorAll('.favorite-heart').forEach(function(heart) {
+        const img = heart.querySelector('img'); // получаем картинку внутри <a>
+        heart.addEventListener('click', function(e) {
             e.preventDefault();
-            const itemId = btn.dataset.itemId;
+            const itemId = heart.dataset.itemId;
 
             fetch(`/items/favorite/toggle/${itemId}/`, {
                 method: 'GET',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
             })
-            .then(res => res.json())
+            .then(response => response.json())
             .then(data => {
                 if(data.favorited){
                     img.src = "{% static 'images/love1.png' %}";
@@ -126,10 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     img.dataset.favorited = "false";
                 }
             })
-            .catch(err => console.log(err));
+            .catch(error => {
+                console.error('Ошибка при обновлении избранного:', error);
+            });
         });
     });
 });
 </script>
-
 {% endblock %}
