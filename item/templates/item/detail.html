@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}{{ item.name }}{% endblock %}
 
@@ -11,8 +12,24 @@
     </div>
 
     <!-- Описание товара -->
-    <div class="col-span-2 p-6 bg-gray-100 rounded-xl shadow ">
-        <h1 class="mb-4 text-3xl font-black text-black">{{ item.name }}</h1>
+    <div class="col-span-2 p-6 bg-gray-100 rounded-xl shadow flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-3xl font-black text-black">{{ item.name }}</h1>
+
+            <!-- Кнопка избранного с PNG -->
+            <a href="#" id="favorite-btn" data-item-id="{{ item.id }}" class="w-9 h-9">
+                <img id="favorite-img"
+                     class="w-full h-full object-contain"
+                     alt="Избранное"
+                     {% if user.is_authenticated and item.id in favorite_ids %}
+                         src="{% static 'images/love1.png' %}"
+                         data-favorited="true"
+                     {% else %}
+                         src="{% static 'images/love0.png' %}"
+                         data-favorited="false"
+                     {% endif %}>
+            </a>
+        </div>
 
         <p class="text-black text-xl font-semibold mb-4">
             <strong>Цена: </strong>{{ item.price|floatformat:"0" }}₽/м
@@ -23,12 +40,11 @@
             {{ item.description|linebreaksbr }}
         </p>
 
-        <!-- Кнопка связаться с продавцом с иконкой -->
+        <!-- Кнопка связаться с продавцом -->
         <a href="{% url 'core:contact' %}"
            class="inline-flex items-center px-8 py-3 text-lg font-semibold bg-teal-700 text-white rounded-xl
                   transform hover:scale-105 hover:bg-teal-800 transition duration-300 ease-in-out">
             Связаться с продавцом
-            <!-- Иконка стрелки -->
             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -65,4 +81,36 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- JS для toggle favorite -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('favorite-btn');
+    const img = document.getElementById('favorite-img');
+
+    if(btn){
+        btn.addEventListener('click', function(e){
+            e.preventDefault();
+            const itemId = btn.dataset.itemId;
+
+            fetch(`/items/favorite/toggle/${itemId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.favorited){
+                    img.src = "{% static 'images/love1.png' %}";
+                    img.dataset.favorited = "true";
+                } else {
+                    img.src = "{% static 'images/love0.png' %}";
+                    img.dataset.favorited = "false";
+                }
+            })
+            .catch(err => console.log(err));
+        });
+    }
+});
+</script>
+
 {% endblock %}

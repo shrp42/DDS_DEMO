@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-8 text-3xl text-center font-semibold">Ваши избранные товары</h2>
+
+    {% if favorite_items %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for item in favorite_items %}
+                <div class="bg-white rounded-2xl shadow hover:shadow-xl transition duration-300 overflow-hidden flex flex-col h-full">
+
+                    {% if item.image %}
+                        <div class="h-56 overflow-hidden">
+                            <img src="{{ item.image.url }}"
+                                 class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                    {% else %}
+                        <div class="h-56 bg-gray-200 flex items-center justify-center text-gray-400">
+                            No Image
+                        </div>
+                    {% endif %}
+
+                    <div class="p-6 flex flex-col flex-grow">
+                        <p class="text-sm text-gray-400 mb-1">{{ item.category.name }}</p>
+                        <h2 class="text-xl font-semibold mb-2">{{ item.name }}</h2>
+
+                        {% if item.description %}
+                            <p class="text-gray-600 text-sm mb-4">{{ item.description|truncatewords:15 }}</p>
+                        {% endif %}
+
+                        <!-- Нижний блок: цена + кнопка + сердечко -->
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-teal-700 font-bold text-lg">{{ item.price }}₽/м</span>
+
+                            <div class="flex items-center gap-2">
+                                <a href="{% url 'item:detail' item.id %}"
+                                   class="px-4 py-2 text-sm font-medium bg-teal-700 text-white rounded-lg hover:bg-teal-900 transition">
+                                    Посмотреть
+                                </a>
+
+                                <!-- Кнопка избранного -->
+                                <a href="#" class="w-8 h-8" data-item-id="{{ item.id }}">
+                                    <img class="w-full h-full object-contain favorite-img"
+                                         alt="Избранное"
+                                         {% if user.is_authenticated and item.id in favorite_ids %}
+                                             src="{% static 'images/love0.png' %}"
+                                             data-favorited="true"
+                                         {% else %}
+                                             src="{% static 'images/love1.png' %}"
+                                             data-favorited="false"
+                                         {% endif %}>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-500 text-xl">У вас пока нет избранных товаров.</p>
+    {% endif %}
+</div>
+
+<!-- JS для toggle favorite -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.favorite-img').forEach(function(img){
+        const btn = img.parentElement;
+
+        btn.addEventListener('click', function(e){
+            e.preventDefault();
+            const itemId = btn.dataset.itemId;
+
+            fetch(`/items/favorite/toggle/${itemId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.favorited){
+                    img.src = "{% static 'images/love1.png' %}";
+                    img.dataset.favorited = "true";
+                } else {
+                    img.src = "{% static 'images/love0.png' %}";
+                    img.dataset.favorited = "false";
+                }
+            })
+            .catch(err => console.log(err));
+        });
+    });
+});
+</script>
+{% endblock %}

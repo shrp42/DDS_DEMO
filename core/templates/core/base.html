@@ -20,10 +20,11 @@
         <div class="flex items-center gap-6">
 
             <!-- Поиск -->
-            <form method="get" action="/" class="relative">
+            <form method="get" action="{% url 'core:search' %}" class="relative">
                 <input
                     type="text"
                     name="query"
+                    value="{{ request.GET.query }}"
                     placeholder="Поиск..."
                     class="w-64 px-4 py-2 border border-black rounded-full focus:outline-none focus:ring-2 focus:ring-teal-700"
                 >
@@ -40,7 +41,7 @@
             </form>
 
             <!-- Избранное -->
-            <a href="#" class="text-lg font-medium hover:text-teal-700 transition">
+            <a href="{% url 'item:favorites_list' %}" class="text-lg font-medium hover:text-teal-700 transition">
                 Избранное
             </a>
 

@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('faq/', views.faq_view, name='faq'),
     path('profile/', views.profile, name='profile'),
+    path('search/', views.search, name='search'),
 
     # Password reset
     path(

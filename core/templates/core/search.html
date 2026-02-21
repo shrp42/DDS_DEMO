@@ -1,14 +1,29 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Search{% endblock %}
 
 {% block content %}
-<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-4xl text-center font-bold">Главная страница</h2>
-    <h2 class="mb-12 text-2xl text-center font-bold">Популярные товары</h2>
 
-    <div class="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="mb-10">
+    {% if query %}
+        <h1 class="text-3xl font-bold">
+            Результаты по запросу:
+            <span class="text-teal-700">"{{ query }}"</span>
+        </h1>
+        <p class="text-gray-500 mt-2">
+            {{ items|length }} item{{ items|length|pluralize }} found
+        </p>
+    {% else %}
+        <h1 class="text-3xl font-bold">
+            Поиск всех предметов
+        </h1>
+    {% endif %}
+</div>
+
+{% if items %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
         {% for item in items %}
             <div class="bg-white rounded-2xl shadow hover:shadow-xl transition duration-300 overflow-hidden flex flex-col h-full group">
 
@@ -72,50 +87,49 @@
                     </div>
 
                </div>
-        </div>
-        {% empty %}
-            <p class="col-span-3 text-center text-gray-500">Нет выбранного товара.</p>
+            </div>
         {% endfor %}
-    </div>
-</div>
 
-<div class="mt-12 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-2xl text-center font-bold">Категории</h2>
-    <div class="grid grid-cols-3 gap-6">
-        {% for category in categories %}
-            <a href="{% url 'item:category_items' category.id %}">
-                <div class="bg-teal-700 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 hover:bg-teal-800 transition duration-300 ease-in-out p-6 flex items-center justify-center cursor-pointer">
-                    <h2 class="text-3xl font-semibold mb-0 text-white cursor-pointer">{{ category.name }}</h2>
-                </div>
-            </a>
-        {% empty %}
-            <p class="col-span-3 text-center text-white">Нет выбранной категории.</p>
-        {% endfor %}
     </div>
-</div>
+{% else %}
+    <div class="text-center py-20">
+        <h2 class="text-2xl font-semibold text-gray-500">
+            Не удалось ничего найти
+        </h2>
+        <p class="text-gray-400 mt-2">
+            Попробуйте что-нибудь другое
+        </p>
+    </div>
+{% endif %}
 
-<!-- Скрипт для работы сердечек -->
+<!-- JS для toggle favorite -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.favorite-heart').forEach(function(heart) {
-        heart.addEventListener('click', function(e) {
+    document.querySelectorAll('.favorite-img').forEach(function(img){
+        const btn = img.parentElement;
+
+        btn.addEventListener('click', function(e){
             e.preventDefault();
-            const itemId = heart.dataset.itemId;
+            const itemId = btn.dataset.itemId;
 
             fetch(`/items/favorite/toggle/${itemId}/`, {
                 method: 'GET',
-                headers: {'X-Requested-With': 'XMLHttpRequest'}
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if(data.favorited){
-                    heart.src = "{% static 'images/love1.png' %}";
+                    img.src = "{% static 'images/love1.png' %}";
+                    img.dataset.favorited = "true";
                 } else {
-                    heart.src = "{% static 'images/love0.png' %}";
+                    img.src = "{% static 'images/love0.png' %}";
+                    img.dataset.favorited = "false";
                 }
-            });
+            })
+            .catch(err => console.log(err));
         });
     });
 });
 </script>
+
 {% endblock %}
