@@ -13,10 +13,17 @@ class Category(models.Model):
 
 
 class Item(models.Model):
+
+    UNIT_CHOICES = (
+        ('m', 'метр'),
+        ('pcs', 'штука'),
+    )
+
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
     description = models.TextField(blank=True, null=True)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    unit = models.CharField(max_length=10, choices=UNIT_CHOICES, default='pcs')
     image = models.ImageField(upload_to='item_images', blank=True, null=True)
     is_sold = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name='item', on_delete=models.CASCADE)

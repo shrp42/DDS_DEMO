@@ -32,7 +32,7 @@
         </div>
 
         <p class="text-black text-xl font-semibold mb-4">
-            <strong>Цена: </strong>{{ item.price|floatformat:"0" }}₽/м
+            <strong>Цена: </strong>{{ item.price|floatformat:0 }}₽/{{ item.get_unit_display }}
         </p>
 
         <p class="text-black text-lg font-thin mb-6">

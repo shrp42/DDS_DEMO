@@ -33,7 +33,7 @@
 
                         <!-- Нижний блок: цена + кнопка + сердечко -->
                         <div class="flex justify-between items-center mt-auto">
-                            <span class="text-teal-700 font-bold text-lg">{{ item.price }}₽/м</span>
+                            <span class="text-teal-700 font-bold text-lg">{{ item.price|floatformat:0 }}₽/{{ item.get_unit_display }}</span>
 
                             <div class="flex items-center gap-2">
                                 <a href="{% url 'item:detail' item.id %}"
