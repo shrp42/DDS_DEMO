@@ -40,9 +40,7 @@ class SignupForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
-
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
             'placeholder': 'Новый пароль (оставьте пустым, если не менять)',
             'class': 'w-full py-4 px-6 rounded-xl border focus:outline-none focus:ring-2 focus:ring-teal-700 transition'
         }),

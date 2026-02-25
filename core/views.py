@@ -1,13 +1,9 @@
-from unicodedata import category
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from item.models import Category, Item
 from .forms import SignupForm,ProfileForm
-from django.db.models import Q
-from django.db.models.functions import Lower
 from django.contrib import messages
-from django.contrib.auth.models import User
 
 
 def index(request):
@@ -28,13 +24,12 @@ def index(request):
 def contact(request):
     return render(request, 'core/contact.html')
 
-
+@login_required
 def profile(request):
     return render(request, 'core/profile.html')
 
 
 def faq_view(request):
-    # Список вопросов и ответов
     faq_list = [
         {"question": "Как создать аккаунт?", "answer": "Перейдите на страницу регистрации и заполните форму."},
         {"question": "Как восстановить пароль?", "answer": "На странице входа нажмите 'Забыли пароль?'."},
