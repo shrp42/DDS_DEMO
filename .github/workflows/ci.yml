@@ -22,15 +22,15 @@ jobs:
         echo "CELERY_BROKER_URL=redis://redis:6379/0" >> .env
 
     - name: Поднимаем Docker-контейнеры
-      run: docker-compose up -d --build
+      run: docker compose up -d --build
 
     - name: Ждем 15 секунд (пока MySQL полностью включится)
       run: sleep 15
 
     - name: Запускаем тесты Django
-      run: docker-compose exec -T web python manage.py test
+      run: docker compose exec -T web python manage.py test
 
     - name: Проверяем качество кода (Линтер Flake8)
       run: |
-        docker-compose exec -T web pip install flake8
-        docker-compose exec -T web flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        docker compose exec -T web pip install flake8
+        docker compose exec -T web flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
