@@ -1,0 +1,36 @@
+name: Django Docker CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Выделяем виртуальный сервер на Linux
+
+    steps:
+    - name: Скачиваем код из репозитория
+      uses: actions/checkout@v4
+
+    - name: Создаем файл .env для робота
+      run: |
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+        echo "DB_USER=root" >> .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        echo "DB_HOST=db" >> .env
+        echo "DB_PORT=3306" >> .env
+        echo "CELERY_BROKER_URL=redis://redis:6379/0" >> .env
+
+    - name: Поднимаем Docker-контейнеры
+      run: docker-compose up -d --build
+
+    - name: Ждем 15 секунд (пока MySQL полностью включится)
+      run: sleep 15
+
+    - name: Запускаем тесты Django
+      run: docker-compose exec -T web python manage.py test
+
+    - name: Проверяем качество кода (Линтер Flake8)
+      run: |
+        docker-compose exec -T web pip install flake8
+        docker-compose exec -T web flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics

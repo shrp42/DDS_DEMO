@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from item.models import Category, Item
 from .forms import SignupForm,ProfileForm
 from django.contrib import messages
+from django.db.models import Q
 
 
 def index(request):
@@ -62,7 +63,7 @@ def logout_view(request):
 
 
 def search(request):
-    query = request.GET.get('query', '').strip().lower()
+    query = request.GET.get('query', '').strip()
     items = Item.objects.filter(is_sold=False)
 
     favorite_ids = []
@@ -70,19 +71,16 @@ def search(request):
         favorite_ids = list(request.user.favorites.values_list('item_id', flat=True))
 
     if query:
-        filtered_items = []
-        for item in items:
-            aliases = item.aliases.lower().split(',') if item.aliases else []
-            if (query in item.name.lower() or
-                (item.description and query in item.description.lower()) or
-                query in item.category.name.lower() or
-                any(query in alias.strip() for alias in aliases)):
-                filtered_items.append(item)
-        items = filtered_items
+        items = items.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query) |
+            Q(aliases__icontains=query)
+        ).select_related('category').distinct()
 
     return render(request, 'core/search.html', {
         'items': items,
-        'query': request.GET.get('query', ''),
+        'query': query,
         'favorite_ids': favorite_ids
     })
 
