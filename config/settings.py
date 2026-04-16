@@ -36,7 +36,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost",
+]
+
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "web", "0.0.0.0"]
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
