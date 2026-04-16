@@ -5,8 +5,9 @@ from item.models import Category, Item
 from .forms import SignupForm,ProfileForm
 from django.contrib import messages
 from django.db.models import Q
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60 * 15)
 def index(request):
     items = Item.objects.filter(is_sold=False)[0:3]
     categories = Category.objects.all()
