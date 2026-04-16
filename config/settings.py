@@ -150,3 +150,6 @@ CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
