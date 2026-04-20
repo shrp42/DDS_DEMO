@@ -208,7 +208,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'WARNING', # Записываем только проблемы (Warning, Error, Critical)
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': os.path.join(LOGS_DIR, 'errors.log'),
             'formatter': 'verbose',
