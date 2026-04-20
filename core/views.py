@@ -22,7 +22,7 @@ def index(request):
         'favorite_ids': favorite_ids
     })
 
-
+@cache_page(60 * 15)
 def contact(request):
     return render(request, 'core/contact.html')
 
@@ -30,7 +30,7 @@ def contact(request):
 def profile(request):
     return render(request, 'core/profile.html')
 
-
+@cache_page(60 * 15)
 def faq_view(request):
     faq_list = [
         {"question": "Как создать аккаунт?", "answer": "Перейдите на страницу регистрации и заполните форму."},
