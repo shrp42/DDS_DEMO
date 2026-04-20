@@ -2,6 +2,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Item, Category, Favorite
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ItemSerializer
+from drf_spectacular.utils import extend_schema
 
 
 def detail(request, pk):
@@ -52,3 +56,10 @@ def favorites_list(request):
     return render(request, 'item/favorites.html', {
         'favorite_items': favorite_items
     })
+
+@extend_schema(responses=ItemSerializer(many=True))
+@api_view(['GET'])
+def api_items_list(request):
+    items = Item.objects.all()
+    serializer = ItemSerializer(items, many=True)
+    return Response(serializer.data)
